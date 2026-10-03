@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.env
+data/
+models/*.pt
+models/*.onnx
+models/insightface/
+.pytest_cache/
+*.egg-info/
+node_modules/
+.venv/
+dist/
+dist-ssr/
+.tanstack/
+*.tsbuildinfo
+*.log
+

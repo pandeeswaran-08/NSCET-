@@ -1,0 +1,11 @@
+{
+  "name": "face-attendance-workspace",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "frontend": "npm --prefix frontend run dev",
+    "backend": "powershell -Command \"Set-Location backend; & '..\\.venv\\Scripts\\python.exe' -m uvicorn app.api.main:get_app --factory --reload --port 8000\"",
+    "worker": "powershell -Command \"Set-Location backend; & '..\\.venv\\Scripts\\python.exe' -m app.worker\""
+  }
+}
