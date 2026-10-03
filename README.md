@@ -1,25 +1,164 @@
-# Face Recognition Attendance System — Complete Architecture & Flow Guide
+<div align="center">
 
-An enterprise-grade, real-time biometric face attendance system engineered for multi-camera CCTV/RTSP entrance feeds, USB webcams, and browser kiosks. Built with **FastAPI**, **YOLO11s-face**, **InsightFace (ArcFace 512-D)**, **SQLite / PostgreSQL**, and a modern **React 19 + Vite** dashboard styled with the **Vantage Design System**.
+# 🎓 NSCET Face Recognition Attendance System
+### Enterprise Real-Time Biometric Attendance & Identity Intelligence Platform
+
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat&logo=python&logoColor=white)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115.6-009688?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.2-EE4C2C?style=flat&logo=pytorch&logoColor=white)](https://pytorch.org)
+[![YOLO11](https://img.shields.io/badge/YOLO11s--face-Ultralytics-00FFFF?style=flat&logoColor=black)](https://github.com/ultralytics/ultralytics)
+[![ArcFace](https://img.shields.io/badge/InsightFace-ArcFace_512D-FF6F00?style=flat)](https://github.com/deepinsight/insightface)
+[![React](https://img.shields.io/badge/React-19.2-61DAFB?style=flat&logo=react&logoColor=black)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-8.1.5-646CFF?style=flat&logo=vite&logoColor=white)](https://vitejs.dev)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v4.0-06B6D4?style=flat&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![License](https://img.shields.io/badge/License-Proprietary-red.svg?style=flat)](#)
+
+<p align="center">
+  <b>Developed for Nadar Saraswathi College of Engineering and Technology (NSCET)</b><br>
+  High-throughput, real-time facial recognition attendance system supporting multi-camera CCTV/RTSP entrance feeds, USB webcams, browser kiosks, automated check-in/out state machines, intra-day flow analytics, and complete academic identity roster management.
+</p>
 
 ---
 
-## Table of Contents
-1. [High-Level Architecture & End-to-End Flow](#1-high-level-architecture--end-to-end-flow)
-2. [Detailed Step-by-Step Processing Flow](#2-detailed-step-by-step-processing-flow)
-3. [Academic Institution Architecture & Taxonomy](#3-academic-institution-architecture--taxonomy)
-4. [Vantage UI Design System Specifications](#4-vantage-ui-design-system-specifications)
-5. [Project Directory Structure](#5-project-directory-structure)
-6. [Identity Enrollment & Registration Flow](#6-identity-enrollment--registration-flow)
-7. [Real-Time Recognition & Attendance State Machine](#7-real-time-recognition--attendance-state-machine)
+</div>
+
+## 📑 Table of Contents
+
+1. [Entire Tech Stack Specification](#1-entire-tech-stack-specification)
+2. [Key System Features & Modules](#2-key-system-features--modules)
+3. [High-Level Architecture & End-to-End Pipeline](#3-high-level-architecture--end-to-end-pipeline)
+4. [Detailed Biometric Processing Flow](#4-detailed-biometric-processing-flow)
+5. [Academic Institution Architecture & Taxonomy (NSCET)](#5-academic-institution-architecture--taxonomy-nscet)
+6. [Vantage UI Design System Specifications](#6-vantage-ui-design-system-specifications)
+7. [Project Directory & File Structure](#7-project-directory--file-structure)
 8. [Quickstart & Run Guide](#8-quickstart--run-guide)
 9. [API Reference & WebSocket Specification](#9-api-reference--websocket-specification)
 10. [Configuration & Tuning Parameters](#10-configuration--tuning-parameters)
-11. [Enterprise Resilience & Edge Case Handling](#11-enterprise-resilience--edge-case-handling)
+11. [Testing & Quality Assurance](#11-testing--quality-assurance)
+12. [Enterprise Resilience & Security Guardrails](#12-enterprise-resilience--security-guardrails)
 
 ---
 
-## 1. High-Level Architecture & End-to-End Flow
+## 1. Entire Tech Stack Specification
+
+The system is engineered using a decoupled, production-grade microservices architecture combining cutting-edge Computer Vision deep learning with an asynchronous backend and an ultra-responsive modern frontend.
+
+### 🌐 Frontend Layer
+| Component | Technology | Version | Purpose & Description |
+| :--- | :--- | :--- | :--- |
+| **Framework** | **React** | `19.2.0` | Declarative, component-driven reactive user interface |
+| **Build Tool & Bundler** | **Vite** | `8.1.5` | Lightning-fast HMR dev server and optimized rollup production bundler |
+| **Language** | **TypeScript** | `5.8.3` | Type-safe development with strict type inference across routes and payloads |
+| **Client-side Routing** | **TanStack Router** | `1.170.41` | Fully type-safe client router with search-param state persistence and code splitting |
+| **Router Vite Plugin** | **@tanstack/router-plugin** | `1.168.42` | Auto-generation of typed route trees (`routeTree.gen.ts`) |
+| **Data Fetching & Cache** | **TanStack Query** | `5.101.1` | Asynchronous server-state synchronization, background refetching, and caching |
+| **CSS & Design System** | **Tailwind CSS** | `4.2.1` | Next-gen CSS engine using `@tailwindcss/vite` with custom HSL CSS tokens |
+| **UI Primitives** | **Radix UI** | `1.x` | Accessible headless components (`Dialog`, `AlertDialog`, `Tooltip`, `Slot`) |
+| **Component Variants** | **Class Variance Authority** | `0.7.1` | Structured type-safe UI variants for buttons, badges, cards, and tabs |
+| **Class Merging** | **clsx & tailwind-merge** | `2.1` / `3.5` | Conflict-free conditional CSS utility classes |
+| **Iconography** | **Lucide React** | `0.575.0` | Comprehensive, consistent SVG icon set |
+| **Toast Notifications** | **Sonner** | `2.0.7` | Rich, animated, stacked notification toasts |
+| **Date Formatting** | **date-fns** | `4.1.0` | Modular time and date formatting for intra-day records and logs |
+| **Runtime Validation** | **Zod** | `3.25.76` | Client-side schema validation for form submissions and query parameters |
+| **Testing** | **Vitest & Testing Library** | `4.1.10` / `16.0` | Unit and integration testing for UI components and routing |
+
+---
+
+### ⚙️ Backend & API Layer
+| Component | Technology | Version | Purpose & Description |
+| :--- | :--- | :--- | :--- |
+| **Web Framework** | **FastAPI** | `0.115.6` | High-performance, async Python web API framework with automatic OpenAPI docs |
+| **ASGI Web Server** | **Uvicorn** | `0.32.1` | Production-grade ASGI server with `uvloop` and `httptools` acceleration |
+| **Language Runtime** | **Python** | `3.11+` | Core execution environment with native typing and asynchronous concurrency |
+| **Settings & Validation**| **Pydantic v2 & Pydantic-Settings** | `2.10.3` | Strict request/response modeling and environment variable validation |
+| **Database ORM** | **SQLAlchemy** | `2.0.36` | Modern 2.0-style async/sync ORM with connection pooling |
+| **Database Engines** | **SQLite / PostgreSQL** | `3.x / 16.x` | SQLite default for zero-config local run; PostgreSQL (`psycopg2-binary 2.9.10`) for production |
+| **Schema Migrations** | **Alembic** | `1.14.0` | Database schema version control and automatic migration scripts |
+| **Cache & KV Store** | **Redis** | `5.2.1` | Fast distributed attendance cooldown cache with automatic in-memory fallback |
+| **Authentication** | **PyJWT & Passlib / Bcrypt**| `2.15` / `5.0` | JWT bearer token authorization and salted Bcrypt password hashing |
+| **Data Wrangling** | **Pandas & NumPy** | `2.2.3` / `1.26.4` | Data aggregation, time-series flow curves, and vector transformations |
+| **Report Exporting** | **OpenPyXL** | `3.1.5` | Generation of formatted Excel (`.xlsx`) files with institutional headers |
+| **Logging** | **Loguru** | `0.7.3` | Structured, colorized, thread-safe asynchronous logging |
+| **Testing Framework** | **PyTest & HTTPX** | `8.3.4` / `0.28.1`| Session-scoped integration and E2E workflow test runner |
+
+---
+
+### 🧠 Computer Vision & AI/ML Pipeline
+| Model / Tool | Architecture / Weights | Purpose & Pipeline Role |
+| :--- | :--- | :--- |
+| **Face Detection** | **YOLO11s-face (Ultralytics 8.3.50)** | Anchor-free high-speed single-stage detector (`yolov11s-face.pt`, imgsz=640). Detects multiple faces in crowded entrances simultaneously. |
+| **Alternative Detectors**| **MediaPipe FaceMesh & MTCNN** | Multi-face mesh landmark extraction & secondary detector fallbacks. |
+| **Face Alignment** | **5-Point Affine Similarity Transform** | Canonical 112×112 ArcFace coordinate frame alignment using eye centers, nose tip, and mouth corners. |
+| **Quality Filter** | **Laplacian Variance Blur Detection** | Filters out motion-blurred face crops (rejection threshold `variance < 40.0`). |
+| **Illumination Filter** | **CLAHE Adaptive Equalization** | Contrast Limited Adaptive Histogram Equalization active when luminance `< 70.0`. |
+| **Deep Feature Extractor**| **InsightFace ArcFace (w600k_r50)** | ResNet-50 backbone trained with Additive Angular Margin Loss, outputting unit-normalized **512-dimensional embeddings**. |
+| **Inference Engines** | **PyTorch 2.2 / ONNX Runtime 1.20**| CPU / CUDA GPU accelerated model inference with automatic device detection. |
+| **Vector Search** | **NumPy Vectorized Dot Product / FAISS**| Sub-millisecond cosine similarity search across thousands of enrolled identities. |
+| **Temporal Tracker** | **IoU (Intersection-over-Union)** | Multi-face tracking across frames to maintain trajectory and eliminate frame flickering. |
+| **Anti-Spoofing** | **EAR (Eye Aspect Ratio) & Liveness** | Passive blink tracking and texture consistency checks to deter photo replay attacks. |
+
+---
+
+### 🚢 DevOps, Infrastructure & Runtime
+| Tool | Configuration | Role |
+| :--- | :--- | :--- |
+| **Containerization** | **Docker & Docker Compose** | Multi-stage Dockerfile bundling FastAPI backend, AI dependencies, and static frontend. |
+| **Process Management**| **Multi-camera Worker (`app.worker`)** | Standalone multi-threaded OpenCV video capture pipeline reading RTSP and USB feeds. |
+| **Cross-Platform** | **Windows, Linux, macOS** | Seamless execution on Windows PowerShell and POSIX environments. |
+
+---
+
+## 2. Key System Features & Modules
+
+```
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                   NSCET ATTENDANCE DASHBOARD                                    │
+├───────────────┬───────────────────┬───────────────────┬───────────────────┬──────────────────────┤
+│ 📸 Live       │ 📊 Analytics &   │ 📋 Attendance     │ 👥 Personnel      │ ⚙️ System Settings   │
+│    Scanner    │    Monitoring     │    Ledger         │    Directory      │    & Diagnostics     │
+└───────────────┴───────────────────┴───────────────────┴───────────────────┴──────────────────────┘
+```
+
+### 1. 📸 Live Camera Scanner HUD (`ScannerView.tsx`)
+- **Interactive Multi-Camera Video Feed**: Connects to USB webcams or remote RTSP streams.
+- **Biometric HUD Overlay**: Real-time bounding boxes around detected faces with confidence badges and name tags.
+- **Instant Audio & Visual Feedback**: Web Audio synthesized chime and toast feedback upon confirmed registration/check-in.
+- **Live Pipeline Diagnostics**: Displays detector inference time, alignment latency, embedding latency, and active FPS telemetry.
+
+### 2. 📊 Analytics & Monitoring (`DataExplorerView.tsx`)
+- **Telemetry Overview Cards**: Total attendance, on-time arrivals, late entries (past 09:15 cutoff), and active camera counts.
+- **Intra-Day Flow Curves**: Hourly arrival and departure trajectories (8:00 AM – 6:00 PM).
+- **Departmental Flow Analysis**: Distribution breakdown across CSE, AIDS, ECE, EEE, MECH, and CIVIL.
+- **Identity Telemetry Table**: Real-time log of verified identities with similarity scores and camera origins.
+
+### 3. 📋 Attendance Ledger & Verification (`AttendanceView.tsx`)
+- **Multi-Parameter Search & Filter**: Filter records by Date, Degree (B.E. / B.Tech), Academic Department, Event Type (`check_in` / `check_out`), or Student Name/Roll Number.
+- **Export Capabilities**:
+  - **CSV Report**: Instant download with institutional headers.
+  - **Excel Workbook (`.xlsx`)**: Formatted binary Excel workbook created via OpenPyXL.
+  - **Printable Ledger Sheet**: Formatted official college paper modal with college seal, department breakdown, date stamp, and Dean/HOD signature blocks (`window.print()`).
+
+### 4. 👥 Personnel Management & Enrollment (`PersonnelView.tsx`)
+- **Student & Staff Directory**: Searchable list with avatar previews, roll numbers, degrees, departments, and vector sample counts.
+- **High-Quality Multi-Photo Enrollment**:
+  - Upload 3 to 10 photos per individual.
+  - **Automated Quality Gate**: Checks for single-face constraint, minimum resolution (`>= 80px`), blur variance, and frontal pose.
+  - **Duplicate Face Guard**: Cross-matches face embeddings against the entire database. Rejects duplicate registrations with HTTP 409 Conflict if similarity exceeds `0.65`.
+  - **Automatic Gallery Rebuild**: Re-indexes vector embeddings instantly without requiring a server restart.
+
+### 5. 📹 Camera Telemetry & Stream Manager (`CamerasView.tsx`)
+- **Multi-Camera Grid**: View simultaneous feeds across Entrance Gate, Library, Lab, and Canteen channels.
+- **Worker Telemetry**: Live indicators showing camera status (`online`, `reconnecting`, `error`), FPS counters, and processed frame totals.
+
+### 6. ⚙️ System Settings & Diagnostics (`SettingsView.tsx` & `SettingsModal.tsx`)
+- **Live Recognition Strictness Slider**: Adjust match threshold (`0.30 – 0.70`, default `0.45`).
+- **Cooldown & Checkout Cutoffs**: Configurable cooldown seconds (`300s`) and minimum checkout gap (`60 min`).
+- **Camera Channel Management**: Add, modify, or remove RTSP streams and USB camera indices on-the-fly (`backend/db/settings.json`).
+- **One-Click Gallery Rebuild**: Rebuilds the ArcFace vector index directly from SQLite/PostgreSQL in memory.
+
+---
+
+## 3. High-Level Architecture & End-to-End Pipeline
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -92,20 +231,14 @@ An enterprise-grade, real-time biometric face attendance system engineered for m
 ┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ 8. REAL-TIME BROADCAST & USER INTERFACE                                                         │
 │    • FastAPI Backend (:8000) REST APIs + WebSocket Stream (`/stream/{camera_id}`)               │
-│    • React 19 Frontend Dashboard (:5173) styled with Vantage Design System:                     │
-│        1. Live Scanner: Interactive camera HUD, bounding boxes, name tags, audio chimes         │
-│        2. Attendance Ledger: Searchable logs, Degree & Dept filters, CSV/Excel/Print exports    │
-│        3. Personnel Registry: Student/Staff management & multi-photo ArcFace enrollment         │
-│        4. Cameras Monitor: CCTV feeds, worker health, FPS telemetry, reconnect states           │
-│        5. Diagnostic Settings: API keys, system caches, ArcFace gallery rebuild                 │
+│    • React 19 Frontend Dashboard (:5173) styled with Vantage Design System                      │
 └─────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 2. Detailed Step-by-Step Processing Flow
+## 4. Detailed Biometric Processing Flow
 
-### Sequence Diagram
 ```mermaid
 sequenceDiagram
     autonumber
@@ -113,7 +246,7 @@ sequenceDiagram
     participant Cam as CCTV / Kiosk Camera
     participant Worker as Camera Worker / API
     participant AI as AI Engine (YOLO11 + ArcFace)
-    participant Cache as Redis / In-Memory Cache
+    participant Cache as Redis / In-Memory KV
     participant DB as SQLite / PostgreSQL
     participant UI as React 19 Frontend
 
@@ -143,202 +276,115 @@ sequenceDiagram
 
 ---
 
-## 3. Academic Institution Architecture & Taxonomy
+## 5. Academic Institution Architecture & Taxonomy (NSCET)
 
-The system is configured out-of-the-box for institutional deployment (e.g., **Nadar Saraswathi College of Engineering and Technology — NSCET**), supporting hierarchical degree and department filtering across all screens and reports:
+Configured out-of-the-box for **Nadar Saraswathi College of Engineering and Technology (NSCET)** with institutional hierarchy and validation rules:
 
-### Academic Taxonomy
-- **Undergraduate Degrees (BE)**:
+### Academic Programs & Departments
+- **Bachelor of Engineering (B.E.)**:
   - `CSE` — Computer Science and Engineering
-  - `CIVIL` — Civil Engineering
-  - `MECH` — Mechanical Engineering
+  - `AIDS` — Artificial Intelligence and Data Science
   - `ECE` — Electronics and Communication Engineering
   - `EEE` — Electrical and Electronics Engineering
-- **Undergraduate Degrees (B.Tech)**:
+  - `MECH` — Mechanical Engineering
+  - `CIVIL` — Civil Engineering
+- **Bachelor of Technology (B.Tech)**:
   - `IT` — Information Technology
   - `AIDS` — Artificial Intelligence and Data Science
 
-### Institutional Features
-1. **Dependent Dropdown Filtering**: Selecting a Degree dynamically narrows down the available Departments in all filters, enrollment modals, and exports.
-2. **Printable Attendance Ledger Sheet**: Formatted official document modal with college header, academic department breakdown, date stamp, and dean/faculty signature rows (`window.print()`).
-3. **Institutional Email Restriction**: User logins can be locked to official college domain email addresses (e.g., `@nscet.edu.in`).
-4. **Standardized Process Labels**: Every system process follows a clear descriptive format (e.g., `"Enrollment Validation — Verifies face resolution, blur variance, and single-face constraints"`).
+### Institutional Safeguards
+1. **Dynamic Dependent Filters**: Selecting a Degree automatically restricts the Department dropdowns across all modals, search filters, and reports.
+2. **Roll Number / Register ID Validation**: Unique register number indexing prevents conflicting student entries.
+3. **Official College Seal & Logo**: Integrated asset at `frontend/public/assets/college-logo.png` featured on login screens, navigation bar, and printable documents.
+4. **Official Domain Auth**: Restricts login access to validated institutional Google Workspace/Microsoft domains (e.g., `@nscet.edu.in`).
 
 ---
 
-## 4. Vantage UI Design System Specifications
+## 6. Vantage UI Design System Specifications
 
-The frontend implements the **Vantage Design System** built with **React 19**, **Tailwind CSS v4**, and **TanStack Router**:
+The dashboard uses the **Vantage Design System**, creating a focused, high-contrast, premium dark/light institutional experience:
 
 ### Curated Color Palette
-- **Sidebar Background**: Dark Teal `#06231d` (`var(--sidebar-bg)`)
-- **Active Navigation / Indicator**: `#0a342c` with a 3px emerald accent bar flush with right edge
+- **Sidebar Background**: Deep Pine `#06231d` (`var(--sidebar-bg)`)
+- **Active Navigation Indicator**: `#0a342c` with an emerald right-edge vertical bar
 - **Primary Accent**: Emerald `#0E7A5F` (`var(--primary)`) / Hover: `#0B614B`
-- **Surface**: Pure White `#FFFFFF` on Page Canvas `#F8FAF9`
-- **Hairline Borders**: Soft Sage `#E5EAE7` (`var(--v-border)`) with zero heavy drop shadows (`shadow-xs` / `shadow-sm`)
-- **Status Indicators**:
-  - Check-In: Emerald Soft `#E8F5F1` with Emerald text `#0E7A5F`
-  - Check-Out: Amber Soft `#FEF3C7` with Amber text `#92400E`
-  - Danger / Error: Rose `#DC2626`
+- **Surface Canvas**: Pure White `#FFFFFF` on Page Canvas `#F8FAF9`
+- **Hairline Borders**: Soft Sage `#E5EAE7` (`var(--v-border)`) with subtle shadows
+- **Status Badges**:
+  - `Check-In`: Soft Emerald `#E8F5F1` with dark emerald text `#0E7A5F`
+  - `Check-Out`: Soft Amber `#FEF3C7` with dark amber text `#92400E`
+  - `Alert / Error`: Crimson `#DC2626`
 
-### Typography Hierarchy & Alignment Standards
-| Class | Font Family | Size / Line-Height | Tracking | Usage |
-| :--- | :--- | :--- | :--- | :--- |
-| `.t-h1` | Plus Jakarta Sans | `40px / 1.05` | `-0.025em` | Page Titles |
-| `.t-title` | Plus Jakarta Sans | `20px / 1.25` | `-0.015em` | Card Headers & Section Titles |
-| `.t-kpi` | Plus Jakarta Sans | `36px / 1.1` | `-0.02em` | Metric Numbers (Tabular figures) |
-| `.t-body` | Inter | `14px / 1.45` | `normal` | General descriptions & table data |
-| `.t-small` | Inter | `12px / 1.35` | `normal` | Secondary subtitles, helper labels |
-| `.t-eyebrow` | Inter | `11px / 1.2` | `0.08em` | Uppercase category markers |
-| `.t-mono-xs` | JetBrains Mono | `11px / 1.2` | `normal` | Timestamps, IDs, Confidence %, Badges |
-
-> **Alignment Guarantee**: All flex rows mixing icons, badges, numbers, and labels enforce optical vertical centering using `items-center`, `leading-none`, and `inline-flex` to eliminate baseline descent or text sagging.
+### Typography Hierarchy
+| Class | Font Family | Size / Leading | Usage |
+| :--- | :--- | :--- | :--- |
+| `.t-h1` | Plus Jakarta Sans | `40px / 1.05` | Main Dashboard Titles |
+| `.t-title` | Plus Jakarta Sans | `20px / 1.25` | Section Headers & Card Titles |
+| `.t-kpi` | Plus Jakarta Sans | `36px / 1.1` | Metric Numbers & Tabular KPI Counts |
+| `.t-body` | Inter | `14px / 1.45` | Standard Descriptions & Table Records |
+| `.t-small` | Inter | `12px / 1.35` | Helper Labels, Subtitles |
+| `.t-mono-xs` | JetBrains Mono | `11px / 1.2` | Timestamps, Bounding Box Coords, Confidence % |
 
 ---
 
-## 5. Project Directory Structure
+## 7. Project Directory & File Structure
 
 ```
 face_attendance/
 ├── backend/                      # Python FastAPI AI Engine & Face Recognition
-│   ├── app/                      # Application core code
+│   ├── app/                      # Application source code
 │   │   ├── alignment/            # 5-point similarity transformation & FaceMesh landmarks
-│   │   ├── api/                  # FastAPI routers (auth, persons, recognize, attendance, stream)
-│   │   ├── core/                 # Config loader (Pydantic Settings), security, college branding
-│   │   ├── db/                   # SQLAlchemy models, session factory & SQLite/Postgres repository
+│   │   ├── api/                  # FastAPI routers (auth, persons, recognize, attendance, settings, stream)
+│   │   ├── core/                 # Pydantic configuration, security, college taxonomy
+│   │   ├── db/                   # SQLAlchemy models, SQLite/Postgres repository & sessions
 │   │   ├── detection/            # YOLO11s-face, MTCNN & MediaPipe detector wrappers
-│   │   ├── liveness/             # EAR (Eye Aspect Ratio) passive blink detection
-│   │   ├── recognition/          # InsightFace ArcFace embedder, vector gallery & cosine matcher
-│   │   ├── schemas/              # Pydantic request & response schemas
+│   │   ├── liveness/             # EAR passive blink tracking and liveness models
+│   │   ├── recognition/          # InsightFace ArcFace embedder, gallery index & matcher
+│   │   ├── schemas/              # Pydantic validation schemas
 │   │   ├── services/             # Container, registration, recognition & attendance services
-│   │   ├── tracking/             # IoU-based multi-face tracker across frames
-│   │   ├── utils/                # Image decoding, CLAHE, metrics & KV cache abstraction
+│   │   ├── tracking/             # IoU multi-face frame tracker
+│   │   ├── utils/                # Image decoding, CLAHE equalization & KV store
 │   │   ├── video/                # OpenCV camera reader & RTSP stream processor
 │   │   └── worker.py             # Background continuous multi-camera runner
-│   ├── models/                   # Neural network weights
-│   │   ├── insightface/          # ArcFace buffalo_l models (w600k_r50, det_10g, etc.)
-│   │   └── yolov11s-face.pt      # YOLO11s face detection weights (19 MB)
-│   ├── scripts/                  # Utilities (seed_data, download_models, evaluate, benchmark)
-│   ├── tests/                    # Comprehensive unit & integration test suite (pytest)
+│   ├── alembic/                  # Database migration scripts
+│   ├── db/                       # Persisted settings (settings.json) & local snapshots
+│   ├── models/                   # Neural network weights (yolov11s-face.pt & buffalo_l)
+│   ├── scripts/                  # Utilities (seed_data, download_models, create_admin)
+│   ├── tests/                    # Test suite (test_e2e_workflow.py, test_api.py, etc.)
 │   ├── requirements.txt          # Python dependencies
-│   ├── config.yaml               # Backend runtime configuration
-│   └── .env                      # Backend environment variables
+│   ├── config.yaml               # Backend runtime parameters
+│   └── .env                      # Local environment configuration
 │
-├── frontend/                     # Modern React 19 Web Dashboard
+├── frontend/                     # Modern React 19 Web Application
 │   ├── src/
 │   │   ├── components/           # Feature views:
 │   │   │   ├── ScannerView.tsx   # Interactive webcam scanner & pipeline telemetry
 │   │   │   ├── AttendanceView.tsx# Verification ledger, filters & print modal
 │   │   │   ├── PersonnelView.tsx # Staff/student roster & multi-photo enrollment
 │   │   │   ├── CamerasView.tsx   # CCTV feeds & background worker monitors
+│   │   │   ├── DataExplorerView.tsx # Telemetry, intra-day flow curves & peak hour graphs
+│   │   │   ├── SettingsView.tsx  # Dynamic settings & threshold controls
+│   │   │   ├── SettingsModal.tsx # Quick diagnostic modal
 │   │   │   ├── LoginModal.tsx    # College authentication & quick demo switcher
-│   │   │   ├── SettingsModal.tsx # System diagnostics & token configuration
 │   │   │   └── ui/               # Primitive UI components (button, badge, card, input, etc.)
 │   │   ├── lib/                  # Typed API client (`api.ts`), college taxonomy (`college.ts`)
 │   │   ├── routes/               # TanStack Router routes (`index.tsx`, `__root.tsx`)
 │   │   ├── styles.css            # Vantage design system tokens, typography & animations
 │   │   └── main.tsx              # React application entry point
+│   ├── public/                   # Static assets (college-logo.png, icons, favicons)
 │   ├── package.json              # Frontend npm dependencies
 │   ├── vite.config.ts            # Vite config with backend API proxy (/api -> :8000)
 │   └── tsconfig.json             # TypeScript configuration
 │
-├── db/                           # Database Directory
-│   ├── attendance.db             # SQLite database containing seeded personnel & logs
-│   ├── snapshots/                # Captured face crop snapshots
-│   └── raw/                      # Optional raw enrollment images
+├── db/                           # Shared Database Directory
+│   ├── attendance.db             # Local SQLite database (gitignored)
+│   ├── snapshots/                # Captured face crop snapshots (gitignored)
+│   └── raw/                      # Optional raw enrollment images (gitignored)
 │
 ├── docker-compose.yml            # Multi-container production deployment
 ├── package.json                  # Unified root script runner
-└── README.md                     # Complete Architecture & Flow Guide
-```
-
----
-
-## 6. Identity Enrollment & Registration Flow
-
-```
-Admin Form Input (Code, Name, Degree, Dept, 3–10 Photos)
-                           │
-                           ▼
-              ┌──────────────────────────┐
-              │  Multi-Image Validation  │
-              └────────────┬─────────────┘
-                           │ For each image:
-                           ├─► 1. Exactly 1 face detected (Multi-face rejected)
-                           ├─► 2. Min face bounding box ≥ 80px
-                           ├─► 3. Blur variance (Laplacian) > 40.0
-                           └─► 4. Frontal pose: Yaw ≤ 0.35, Roll ≤ 25°
-                           │
-                           ▼
-              ┌──────────────────────────┐
-              │ 5-Point MediaPipe Warp   │
-              │  to 112×112 Canonical   │
-              └────────────┬─────────────┘
-                           │
-                           ▼
-              ┌──────────────────────────┐
-              │ ArcFace 512-D Embedding  │
-              │   L2-Vector Normalization│
-              └────────────┬─────────────┘
-                           │
-                           ▼
-              ┌──────────────────────────┐
-              │ Duplicate Identity Guard │
-              └────────────┬─────────────┘
-                           │ Cosine similarity vs existing gallery:
-                           ├─► If max(similarity) > 0.65 → REJECT (HTTP 409 Conflict)
-                           └─► If max(similarity) ≤ 0.65 → ACCEPT
-                           │
-                           ▼
-              ┌──────────────────────────┐
-              │ Store DB & Rebuild Index │
-              └──────────────────────────┘
-              Write Person & Vectors to DB
-              Trigger `gallery.rebuild()` in-memory (Zero server restart needed)
-```
-
----
-
-## 7. Real-Time Recognition & Attendance State Machine
-
-When a person appears before an entrance camera or browser kiosk scanner:
-
-```
-                  ┌───────────────────────────────┐
-                  │ Face Sighting in Video Stream │
-                  └───────────────┬───────────────┘
-                                  │
-                                  ▼
-                  ┌───────────────────────────────┐
-                  │   IoU Track Confirmation      │
-                  │   (≥ 3 Consecutive Frames)    │
-                  └───────────────┬───────────────┘
-                                  │
-                                  ▼
-                  ┌───────────────────────────────┐
-                  │  Cosine Match Score ≥ 0.45?   │
-                  └───────┬───────────────┬───────┘
-                     No   │               │ Yes
-             ┌────────────┘               └─────────────┐
-             ▼                                          ▼
-      [Mark as UNKNOWN]                     ┌───────────────────────┐
-      Red bounding box                      │ Check Cooldown Key    │
-      No DB write                           │ `cooldown:{person_id}`│
-                                            └───────┬───────┬───────┘
-                                       Active (<300s)│       │ Expired / None
-                                 ┌──────────────────┘       └─────────────┐
-                                 ▼                                        ▼
-                         [Visual HUD Tag]                        [Set Cooldown TTL=300s]
-                         Skip duplicate DB write                          │
-                                                                          ▼
-                                                         ┌────────────────────────────────┐
-                                                         │ Check Today's DB Records       │
-                                                         └────────┬──────────────┬────────┘
-                                                    No Record     │              │ Has Check-In
-                                                                  ▼              ▼
-                                                          [Log CHECK-IN]   Elapsed ≥ 60m?
-                                                                           ├─ Yes ──► [Log CHECK-OUT]
-                                                                           └─ No  ──► [Skip write]
+├── .gitignore                    # Comprehensive repository ignore rules
+└── README.md                     # System documentation & tech stack guide
 ```
 
 ---
@@ -346,109 +392,174 @@ When a person appears before an entrance camera or browser kiosk scanner:
 ## 8. Quickstart & Run Guide
 
 ### Prerequisites
-- **Python 3.11+**
-- **Node.js 18+** & **npm**
+- **Python 3.11+** installed
+- **Node.js 18+** & **npm** installed
+- (Optional) **CUDA-enabled GPU** for real-time multi-camera CCTV inferencing
+
+---
 
 ### Step 1: Install Dependencies
-```bash
-# Backend virtual environment:
-.\.venv\Scripts\activate
-pip install -r backend/requirements.txt
 
-# Frontend dependencies:
+#### 1. Backend Virtual Environment:
+```powershell
+# Create virtual environment (if not already created)
+python -m venv .venv
+
+# Activate virtual environment:
+# Windows PowerShell:
+.\.venv\Scripts\activate
+# Linux / macOS:
+source .venv/bin/activate
+
+# Install Python requirements
+pip install -r backend/requirements.txt
+```
+
+#### 2. Frontend Dependencies:
+```powershell
 cd frontend
 npm install
 cd ..
 ```
 
+---
+
 ### Step 2: Download AI Model Weights (One-Time Setup)
-```bash
+
+```powershell
 python backend/scripts/download_models.py
 ```
-*Automatically downloads `yolov11s-face.pt` (19 MB) and InsightFace `buffalo_l` (288 MB).*
+*This automatically downloads `yolov11s-face.pt` (19 MB) and InsightFace `buffalo_l` (288 MB) into the `backend/models/` directory.*
+
+---
 
 ### Step 3: Run the Application
-Open separate terminal tabs from the project root:
 
-```bash
-# Terminal 1: Start React Frontend Dashboard (Port 5173)
+Open separate terminal windows from the project root:
+
+```powershell
+# Terminal 1: Start React 19 Frontend Dashboard (Port 5173)
 npm run dev
 
 # Terminal 2: Start FastAPI AI Backend (Port 8000)
 npm run backend
 
-# Terminal 3 (Optional): Start Multi-Camera Background Worker
+# Terminal 3 (Optional): Start Multi-Camera Background RTSP Worker
 npm run worker
 ```
 
-Open **[http://localhost:5173/](http://localhost:5173/)** in your browser.
+Open your browser to: **[http://localhost:5173/](http://localhost:5173/)**
+
+---
 
 ### Default Demo Credentials
+
 | Role | Email | Password | Permissions |
 | :--- | :--- | :--- | :--- |
-| **System Admin** | `admin@nscet.edu.in` | `admin123` | Full access: Enrollment, Deletion, Settings & Logs |
-| **Faculty** | `faculty@nscet.edu.in` | `faculty123` | View Attendance Ledger, Print Sheets & Export Reports |
+| **System Admin** | `admin@nscet.edu.in` | `admin123` | Full access: Enrollment, Deletion, Settings, Gallery Rebuild & Logs |
+| **Faculty / Staff** | `faculty@nscet.edu.in` | `faculty123` | View Attendance Ledger, Print Official Sheets & Export Reports |
 
 ---
 
 ## 9. API Reference & WebSocket Specification
 
-Interactive OpenAPI documentation is accessible at **`http://127.0.0.1:8000/docs`**. Include header `X-API-Key: change-me-please` or `Authorization: Bearer <JWT>` for authenticated routes.
+Interactive OpenAPI Swagger documentation is available at **`http://127.0.0.1:8000/docs`**. Include header `X-API-Key: change-me-please` or `Authorization: Bearer <JWT>` for protected routes.
 
-### Authentication & Accounts
+### Authentication & Profiles
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
-| `POST` | `/auth/login` | Authenticate with institutional credentials to obtain JWT token |
+| `POST` | `/auth/token` | Authenticate with institutional credentials to obtain JWT Bearer token |
 | `GET` | `/auth/me` | Fetch active user profile, name, role, and permissions |
-| `GET` | `/auth/college-info` | Retrieve institutional branding, degree options, and metadata |
+| `GET` | `/college/config` | Retrieve institutional branding, degree options, and department taxonomy |
 
-### Identity Management
+### Personnel & Enrollment
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
-| `GET` | `/persons` | List enrolled personnel (pagination, degree, department filters) |
-| `POST` | `/persons/register` | Multipart enrollment (code, name, degree, dept, 3–10 face crops) |
-| `GET` | `/persons/{id}` | Retrieve individual personnel details and photo count |
+| `GET` | `/persons` | List enrolled students and faculty (pagination, degree, department filters) |
+| `POST` | `/register` | Multi-image face enrollment (name, code, degree, dept, year, 3–10 face images) |
+| `GET` | `/persons/{id}` | Retrieve individual personnel details and photo vector count |
 | `PUT` | `/persons/{id}` | Update personal information or academic department |
-| `DELETE` | `/persons/{id}` | Delete identity and purge 512-D embeddings from gallery |
+| `DELETE` | `/persons/{id}` | Delete identity and remove 512-D embeddings from gallery |
 
 ### Recognition & Attendance
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
-| `POST` | `/recognize` | Ingests video frame; detects, aligns, embeds & matches faces (`mark=true` commits to DB) |
-| `GET` | `/attendance` | Query attendance ledger (filters: date, degree, department, kind, person) |
-| `GET` | `/attendance/daily-counts` | Daily attendance trends for analytics dashboards |
+| `POST` | `/recognize` | Ingests camera frame; detects, aligns, embeds & matches faces (`mark=true` commits to DB) |
+| `GET` | `/attendance/today` | Fetch all attendance events logged for the current date |
+| `GET` | `/attendance/daily-counts`| Hourly attendance trends for analytics dashboards |
 | `GET` | `/attendance/export` | Download filtered records as formatted `.csv` or `.xlsx` |
 
-### Multi-Camera & Streaming
+### System Settings & Gallery
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
-| `GET` | `/cameras` | List configured CCTV channels, RTSP streams, and worker health |
-| `GET` | `/stream/{camera_id}/frame`| Fetch latest processed JPEG snapshot for a camera feed |
-| `WS` | `/stream/{camera_id}` | Real-time WebSocket delivering frames and bounding box metadata |
-| `GET` | `/health` | System diagnostics (database status, cache state, gallery size) |
+| `GET` | `/settings` | Retrieve active system thresholds, cooldown seconds, and camera channels |
+| `POST` | `/settings` | Dynamically update thresholds and camera configs (persists to `settings.json`) |
+| `POST` | `/gallery/rebuild` | Trigger in-memory ArcFace vector gallery synchronization from database |
+| `GET` | `/health` | System diagnostics (database status, models loaded, gallery size, college info) |
+| `WS` | `/stream/{camera_id}` | Real-time WebSocket delivering camera frames and bounding box metadata |
 
 ---
 
 ## 10. Configuration & Tuning Parameters
 
-Configurable in `backend/config.yaml` or `.env`:
+All settings can be configured via `backend/.env`, `backend/config.yaml`, or dynamically through the **Settings Dashboard**:
 
 | Parameter | Default | Recommended Range | Description |
 | :--- | :--- | :--- | :--- |
-| `match_threshold` | `0.45` | `0.42 – 0.52` | Cosine similarity cutoff. Higher values prevent false positives; lower values improve recognition under harsh lighting. |
-| `duplicate_threshold` | `0.65` | `0.60 – 0.70` | Threshold for rejecting duplicate enrollments under different names. |
-| `confirm_frames` | `3` | `2 – 5` | Number of consecutive matching sightings required before marking attendance. |
-| `attendance_cooldown_s` | `300` | `180 – 600` | Cooldown in seconds before the same person can trigger another log. |
-| `min_checkout_gap_min` | `60` | `30 – 120` | Minimum gap in minutes between check-in and check-out in `auto` mode. |
-| `blur_threshold` | `40.0` | `30.0 – 60.0` | Minimum Laplacian variance on face crops to reject blurry frames. |
-| `min_face_px` | `80` | `60 – 112` | Minimum face width/height in pixels to be processed. |
+| `MATCH_THRESHOLD` | `0.45` | `0.42 – 0.52` | Cosine similarity cutoff. Higher values prevent false positives; lower values improve recognition under adverse lighting. |
+| `DUPLICATE_THRESHOLD` | `0.65` | `0.60 – 0.70` | Rejects duplicate student enrollments under different names if similarity exceeds this value. |
+| `CONFIRM_FRAMES` | `3` | `1 – 5` | Number of consecutive matching sightings required before marking attendance. |
+| `ATTENDANCE_COOLDOWN_S`| `300` | `180 – 600` | Cooldown in seconds before the same person can trigger another check-in/out log. |
+| `MIN_CHECKOUT_GAP_MIN` | `60` | `30 – 120` | Minimum gap in minutes between check-in and check-out in `auto` mode. |
+| `BLUR_THRESHOLD` | `40.0` | `30.0 – 60.0` | Minimum Laplacian variance on face crops to reject blurry frames. |
+| `MIN_FACE_PX` | `80` | `50 – 112` | Minimum face width/height in pixels to be accepted. |
 
 ---
 
-## 11. Enterprise Resilience & Edge Case Handling
+## 11. Testing & Quality Assurance
+
+The repository includes a comprehensive, multi-layer automated test suite:
+
+### 1. End-to-End (E2E) Complete Workflow Test Suite
+Covering the entire lifecycle from server health, institutional config, multi-photo enrollment, duplicate face rejection, live recognition, attendance persistence, CSV/Excel export, JWT auth, and gallery re-indexing:
+```powershell
+# Run the complete E2E workflow test suite
+pytest backend/tests/test_e2e_workflow.py -v
+```
+```text
+======================== 26 passed in 6.37s ========================
+```
+
+### 2. Full Backend Test Suite
+```powershell
+# Run all unit and integration tests
+pytest backend/tests/ -q
+```
+```text
+======================== 55 passed in 16.26s =======================
+```
+
+### 3. Frontend Production Build Verification
+```powershell
+cd frontend
+npm run build
+```
+```text
+✓ built in 1.71s with 0 errors
+```
+
+---
+
+## 12. Enterprise Resilience & Security Guardrails
 
 1. **Simultaneous Multi-Face Ingestion**: YOLO11s-face detects all faces in a single forward pass. Each face is cropped, aligned, and matched independently against the vector gallery in parallel.
-2. **Extreme Low-Light / Glare**: CLAHE (Contrast Limited Adaptive Histogram Equalization) automatically balances luminance when mean face intensity drops below `70.0`.
-3. **Camera Stream Dropouts**: The CCTV background worker monitors RTSP/HTTP connections and auto-reconnects using exponential backoff without interrupting running services.
-4. **Redis Failover**: If Redis becomes unavailable, the system transparently falls back to an in-memory thread-safe LRU Key-Value cache.
-5. **Database Connection Health**: SQLAlchemy pre-ping verification checks pool liveness before queries, auto-recovering from dropped database connections.
+2. **Adaptive Illumination (CLAHE)**: Automatically balances face crop contrast when mean luminance drops below `70.0` (ideal for morning/evening entrance lighting).
+3. **Stream Auto-Reconnect**: Camera workers monitor RTSP/HTTP connections and auto-reconnect using exponential backoff without crashing the service.
+4. **Transparent KV Failover**: If Redis is not configured or goes down, the system seamlessly uses an in-memory thread-safe LRU Key-Value store.
+5. **Database Connection Liveness**: SQLAlchemy pre-ping verification checks pool liveness before queries, auto-recovering from dropped database connections.
+
+---
+
+<div align="center">
+  <sub>© 2026 Nadar Saraswathi College of Engineering and Technology (NSCET). All rights reserved.</sub>
+</div>
