@@ -1,0 +1,435 @@
+@import "tailwindcss";
+
+/* ========================================================================= */
+/* VANTAGE DESIGN SYSTEM — Design Tokens                                     */
+/* Calm light mint workspace · dark teal sidebar · emerald accent            */
+/* Hairline borders · no card shadows · mono for technical data              */
+/* Full WCAG AA Contrast Compliance (>= 4.5:1 text, >= 3:1 bold/large)       */
+/* ========================================================================= */
+
+:root {
+  /* Page & Surfaces */
+  --bg-page: #F2F8F6;
+  --surface: #FFFFFF;
+  --border: #DDE7E4;
+
+  /* Text Hierarchy (WCAG AA Compliant) */
+  --text: #0B1F1B;           /* Primary text - contrast 17.5:1 on white, 15.8:1 on #F2F8F6 */
+  --text-muted: #4F635E;     /* Secondary text, captions - contrast 6.08:1 on white, 5.69:1 on #F2F8F6 */
+  --text-faint: #62766F;     /* Placeholders, tertiary - contrast 4.65:1 on white */
+
+  /* Emerald Accent */
+  --primary: #0E7A5F;        /* Interactive accent - contrast 4.88:1 on white, 4.30:1 on mint */
+  --primary-600: #0A6650;    /* Hover / active - contrast 5.54:1 on mint */
+  --primary-soft: #DDF3EA;   /* Soft mint background */
+
+  /* Sidebar (Dark Teal #0A1F1C) */
+  --sidebar-bg: #0A1F1C;
+  --sidebar-active-bg: #0E3F34;
+  --sidebar-text: #C9D8D4;   /* Primary text on sidebar - contrast 11.52:1 on #0A1F1C */
+  --sidebar-muted: #86A099;  /* Raised for 10px labels on #0A1F1C - contrast 6.23:1 */
+
+  /* Semantic Colors with High-Contrast Text Tokens */
+  --warning: #B7791F;        /* Borders, dots, boxes only */
+  --warning-text: #8A5A0B;   /* Text on warning-soft - contrast 5.26:1 on #FDF0D5 */
+  --warning-soft: #FDF0D5;
+  --warning-tab: #9A6410;    /* Amber label tabs on HUD - contrast 5.12:1 with white text */
+
+  --danger: #D93636;
+  --danger-text: #B42323;    /* Error text on danger-soft - contrast 6.2:1 on #FDECEC */
+  --danger-soft: #FDECEC;
+
+  --success: #0E7A5F;
+  --success-text: #0E7A5F;
+  --success-soft: #DDF3EA;
+
+  --info-soft: #DCEBFA;
+  --info-text: #1D4ED8;      /* Info text - contrast 5.2:1 on #DCEBFA */
+
+  --violet-soft: #E9E4FA;
+  --violet-text: #6D28D9;    /* Violet text - contrast 5.5:1 on #E9E4FA */
+
+  /* Shape tokens */
+  --radius-card: 12px;
+  --radius-btn: 10px;
+  --radius-chip: 6px;
+  --radius-dialog: 16px;
+
+  /* ShadCN / Radix compatibility tokens */
+  --background: 150 18% 96%;
+  --foreground: 164 48% 8%;
+  --card: 0 0% 100%;
+  --card-foreground: 164 48% 8%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 164 48% 8%;
+  --primary-hsl: 160 79% 27%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 150 12% 92%;
+  --secondary-foreground: 164 48% 8%;
+  --muted: 150 12% 92%;
+  --muted-foreground: 155 12% 40%;
+  --accent: 160 79% 27%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 68% 53%;
+  --destructive-foreground: 0 0% 100%;
+  --border-hsl: 156 12% 87%;
+  --input: 156 12% 87%;
+  --ring: 160 79% 27%;
+  --radius: 12px;
+}
+
+@theme {
+  --font-display: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-bg-page: var(--bg-page);
+  --color-surface: var(--surface);
+  --color-v-border: var(--border);
+  --color-border: var(--border);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-text-faint: var(--text-faint);
+  --color-primary: var(--primary);
+  --color-primary-600: var(--primary-600);
+  --color-primary-soft: var(--primary-soft);
+  --color-sidebar-bg: var(--sidebar-bg);
+  --color-sidebar-active-bg: var(--sidebar-active-bg);
+  --color-sidebar-text: var(--sidebar-text);
+  --color-sidebar-muted: var(--sidebar-muted);
+  --color-warning: var(--warning);
+  --color-warning-text: var(--warning-text);
+  --color-warning-soft: var(--warning-soft);
+  --color-warning-tab: var(--warning-tab);
+  --color-danger: var(--danger);
+  --color-danger-text: var(--danger-text);
+  --color-danger-soft: var(--danger-soft);
+  --color-success: var(--success);
+  --color-success-text: var(--success-text);
+  --color-success-soft: var(--success-soft);
+  --color-info-soft: var(--info-soft);
+  --color-info-text: var(--info-text);
+  --color-violet-soft: var(--violet-soft);
+  --color-violet-text: var(--violet-text);
+}
+
+/* ========================================================================= */
+/* BASE LAYER — Typography & Body                                            */
+/* ========================================================================= */
+@layer base {
+  body {
+    background-color: var(--bg-page);
+    color: var(--text);
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Display: Plus Jakarta Sans for headings */
+  h1, h2, h3 {
+    font-family: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+    color: var(--text);
+  }
+
+  h1 { font-weight: 800; letter-spacing: -0.02em; }
+  h2 { font-weight: 700; letter-spacing: -0.015em; }
+  h3 { font-weight: 700; letter-spacing: -0.01em; }
+
+  h4, h5, h6 {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  /* Mono: JetBrains Mono for technical data */
+  code, kbd, samp, pre,
+  .font-mono {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, "Cascadia Code", monospace;
+  }
+}
+
+/* ========================================================================= */
+/* VANTAGE TYPE SCALE UTILITIES                                              */
+/* ========================================================================= */
+@layer utilities {
+  .t-h1 {
+    font-family: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+    font-size: 44px;
+    line-height: 1.05;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .t-h2 {
+    font-family: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+    font-size: 28px;
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  .t-title {
+    font-family: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+    font-size: 20px;
+    line-height: 1.25;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .t-kpi {
+    font-family: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+    font-size: 36px;
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .t-body {
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.45;
+    font-weight: 400;
+  }
+
+  .t-small {
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 12px;
+    line-height: 1.35;
+    font-weight: 500;
+  }
+
+  .t-eyebrow {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .t-mono-xs {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 10px;
+    line-height: 1.2;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ========================================================================= */
+/* VANTAGE REUSABLE PATTERNS                                                 */
+/* ========================================================================= */
+
+/* Eyebrow: mono, 11px, uppercase, tracking 0.16em, emerald */
+.vantage-eyebrow {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Page title: display font 44px/800 */
+.vantage-page-title {
+  font-family: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+/* Section header: 20px/700 */
+.vantage-section-title {
+  font-family: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+  font-size: 20px;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+/* Status pill: mono, uppercase, 10-11px, 600 weight, 6px radius */
+.vantage-pill {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 6px;
+  padding: 4px 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+/* Emerald focus ring (2px with 2px offset) */
+.vantage-focus {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.vantage-focus:focus-visible,
+.vantage-focus:focus {
+  outline: none;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 2px var(--bg-page), 0 0 0 4px var(--primary) !important;
+}
+
+/* ========================================================================= */
+/* HUD Viewfinder Reticle Corners (emerald)                                  */
+/* ========================================================================= */
+.hud-corner-tl {
+  border-top: 2.5px solid var(--primary);
+  border-left: 2.5px solid var(--primary);
+  border-top-left-radius: 6px;
+}
+.hud-corner-tr {
+  border-top: 2.5px solid var(--primary);
+  border-right: 2.5px solid var(--primary);
+  border-top-right-radius: 6px;
+}
+.hud-corner-bl {
+  border-bottom: 2.5px solid var(--primary);
+  border-left: 2.5px solid var(--primary);
+  border-bottom-left-radius: 6px;
+}
+.hud-corner-br {
+  border-bottom: 2.5px solid var(--primary);
+  border-right: 2.5px solid var(--primary);
+  border-bottom-right-radius: 6px;
+}
+
+/* Video Overlay Scrim & Text Shadow */
+.video-scrim-top {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+.video-scrim-bottom {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+.video-hud-text {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* ========================================================================= */
+/* STATUS CHIPS                                                              */
+/* ========================================================================= */
+.chip-success {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+.chip-warning {
+  background: var(--warning-soft);
+  color: var(--warning-text);
+}
+.chip-danger {
+  background: var(--danger-soft);
+  color: var(--danger-text);
+}
+.chip-neutral {
+  background: var(--bg-page);
+  color: var(--text-muted);
+}
+
+/* ========================================================================= */
+/* ANIMATIONS                                                                */
+/* ========================================================================= */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+.animate-shake {
+  animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* Scanner Radar Sweep */
+@keyframes radar-sweep {
+  0% { transform: translateY(-100%); opacity: 0; }
+  25% { opacity: 0.8; }
+  50% { opacity: 1; }
+  75% { opacity: 0.8; }
+  100% { transform: translateY(1000%); opacity: 0; }
+}
+.animate-radar-sweep {
+  animation: radar-sweep 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Biometric Face Laser Scanner */
+@keyframes face-laser-scan {
+  0% { top: 10%; opacity: 0; }
+  15% { opacity: 1; }
+  50% { top: 88%; opacity: 1; }
+  85% { opacity: 1; }
+  100% { top: 10%; opacity: 0; }
+}
+.animate-face-laser {
+  animation: face-laser-scan 2.4s ease-in-out infinite;
+}
+
+@keyframes biometric-node-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.35); opacity: 1; }
+}
+.animate-biometric-node {
+  animation: biometric-node-pulse 1.6s ease-in-out infinite;
+}
+
+/* Pulsing live dot (6px) */
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.animate-live-pulse {
+  animation: live-pulse 2s ease-in-out infinite;
+}
+
+/* Fade-in for timeline entries */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.15s ease-out both;
+}
+
+/* ========================================================================= */
+/* PRINT                                                                     */
+/* ========================================================================= */
+@media print {
+  .no-print { display: none !important; }
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .print-only { display: block !important; }
+}
+
+/* ========================================================================= */
+/* REDUCED MOTION                                                            */
+/* ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

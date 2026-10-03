@@ -1,0 +1,26 @@
+# Defaults. Environment variables / .env override anything here.
+detector: yolo            # yolo | mtcnn | mediapipe
+yolo_weights: models/yolov11s-face.pt
+detector_conf: 0.5
+device: auto              # auto | cpu | cuda
+
+match_threshold: 0.45     # cosine similarity
+duplicate_threshold: 0.65 # registration: reject if closer than this to an existing identity
+confirm_frames: 3         # consecutive frames needed before marking
+frame_skip: 2             # process every Nth frame (forced to 1 when liveness is on)
+
+liveness_enabled: false
+ear_threshold: 0.21
+
+attendance_cooldown_s: 300
+min_checkout_gap_min: 60
+timezone: Asia/Kolkata
+
+cameras:
+  - id: cam0
+    source: "0"           # webcam index, RTSP URL, or video file path
+    enabled: true
+    mode: auto            # auto | check_in | check_out
+  # - id: gate
+  #   source: "rtsp://user:pass@192.168.1.10:554/stream1"
+  #   mode: check_in

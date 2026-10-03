@@ -1,0 +1,36 @@
+# --- API / core ---
+fastapi==0.115.6
+uvicorn[standard]==0.32.1
+python-multipart==0.0.19
+pydantic==2.10.3
+pydantic-settings==2.6.1
+python-dotenv==1.0.1
+pyyaml==6.0.2
+loguru==0.7.3
+sqlalchemy==2.0.36
+alembic==1.14.0
+psycopg2-binary==2.9.10
+redis==5.2.1
+numpy==1.26.4
+pandas==2.2.3
+openpyxl==3.1.5
+matplotlib==3.9.3
+# --- Vision / DL ---
+opencv-python-headless==4.10.0.84
+pillow==10.2.0
+torch==2.2.2
+torchvision==0.17.2
+ultralytics==8.3.50
+facenet-pytorch==2.6.0
+mediapipe==0.10.14
+insightface==0.7.3
+onnx==1.17.0
+onnxruntime==1.20.1
+faiss-cpu==1.9.0.post1
+# --- Auth & Security ---
+pyjwt==2.15.1
+bcrypt==5.0.0
+requests==2.32.3
+# --- Tests ---
+pytest==8.3.4
+httpx==0.28.1

@@ -1,0 +1,10 @@
+{
+  "match_threshold": 0.45,
+  "duplicate_threshold": 0.65,
+  "confirm_frames": 3,
+  "attendance_cooldown_s": 300,
+  "min_checkout_gap_min": 60,
+  "late_cutoff": "09:15",
+  "default_mode": "auto",
+  "cameras": []
+}
